@@ -180,6 +180,10 @@ forest_model <- function(model,
 
   make_forest_terms <- function(model) {
     tidy_model <- broom::tidy(model, conf.int = TRUE)
+    conf.low <- confint.default(model)[,1]
+    conf.high <- confint.default(model)[,2]
+    tidy_model <- cbind(broom::tidy(model, conf.int = FALSE),conf.low, conf.high)
+
     data <- stats::model.frame(model)
 
     forest_terms <- tibble::tibble(
